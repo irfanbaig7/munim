@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import OtpInput from "@/components/OtpInput";
-import { DEMO_OTP, getOwner, saveOwner, sendOtp, verifyOtp } from "@/lib/auth";
+import { DEMO_OTP, getMe, sendOtp, verifyOtp } from "@/lib/auth";
 import { cleanPhone, isValidName, isValidPhone } from "@/lib/validation";
 
 type Step = "details" | "otp";
@@ -18,7 +18,9 @@ export default function SignupPage() {
   const [wait, setWait] = useState(0);
 
   useEffect(() => {
-    if (getOwner()) router.replace("/dashboard");
+    getMe()
+      .then((o) => o && router.replace("/dashboard"))
+      .catch(() => { });
   }, [router]);
 
   // Resend timer
@@ -34,24 +36,28 @@ export default function SignupPage() {
     if (!isValidPhone(phone)) return setError("10 ank ka sahi mobile number daalein.");
     setError("");
     setLoading(true);
-    await sendOtp(phone);
-    setLoading(false);
-    setOtp("");
-    setWait(30);
-    setStep("otp");
+    try {
+      await sendOtp(phone);
+      setOtp("");
+      setWait(30);
+      setStep("otp");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Kuch gadbad ho gayi.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const confirm = async (code: string) => {
     if (code.length !== 6 || loading) return;
     setLoading(true);
-    const ok = await verifyOtp(phone, code);
-    if (!ok) {
+    try {
+      await verifyOtp(phone, name.trim(), code);
+      router.replace("/dashboard");
+    } catch (err) {
       setLoading(false);
-      setError("OTP galat hai. Dobara dekhkar daalein.");
-      return;
+      setError(err instanceof Error ? err.message : "Kuch gadbad ho gayi.");
     }
-    saveOwner({ name: name.trim(), phone });
-    router.replace("/dashboard");
   };
 
   return (
@@ -136,10 +142,12 @@ export default function SignupPage() {
             )}
           </div>
 
-          {/* DEMO ONLY: backend judne par ye box hata dena */}
-          <p className="rounded-md bg-haldi/25 px-3 py-2 text-sm">
-            Demo mode: OTP <strong>{DEMO_OTP}</strong> hai. Asli SMS backend judne par aayega.
-          </p>
+          {/* Sirf demo: NEXT_PUBLIC_DEMO_OTP set ho tabhi dikhta hai */}
+          {DEMO_OTP && (
+            <p className="rounded-md bg-haldi/25 px-3 py-2 text-sm">
+              Demo mode: OTP <strong>{DEMO_OTP}</strong> hai. Asli SMS ke liye backend mein SMS provider judna baaki hai.
+            </p>
+          )}
         </div>
       )}
     </main>

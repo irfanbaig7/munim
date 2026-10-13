@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AddCustomerSheet from "@/components/AddCustomerSheet";
-import { getOwner, logout } from "@/lib/auth";
+import { getMe, logout } from "@/lib/auth";
 import { listCustomers } from "@/lib/customers";
 import type { Customer, Owner } from "@/lib/types";
 
@@ -13,20 +13,39 @@ export default function DashboardPage() {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [toast, setToast] = useState("");
 
+  const [loadError, setLoadError] = useState("");
+
   useEffect(() => {
-    const o = getOwner();
-    if (!o) return router.replace("/signup");
-    setOwner(o);
-    setCustomers(listCustomers());
+    (async () => {
+      try {
+        const o = await getMe();
+        if (!o) return router.replace("/signup");
+        setOwner(o);
+        setCustomers(await listCustomers());
+      } catch (e) {
+        setLoadError(e instanceof Error ? e.message : "Data load nahi ho paaya.");
+      }
+    })();
   }, [router]);
 
   const closeSheet = useCallback(() => setSheetOpen(false), []);
 
   const onAdded = (c: Customer) => {
-    setCustomers(listCustomers());
+    setCustomers((prev) => [c, ...prev]);
     setToast(`${c.name} add ho gaye`);
     setTimeout(() => setToast(""), 2500);
   };
+
+  if (loadError)
+    return (
+      <main className="mx-auto max-w-md px-5 py-20 text-center">
+        <p className="font-display text-2xl font-bold">Data load nahi ho paaya</p>
+        <p className="mt-2 text-mute">{loadError}</p>
+        <button onClick={() => location.reload()} className="mt-5 rounded-xl bg-haldi px-5 py-3 font-display text-lg font-bold">
+          Dobara try karein
+        </button>
+      </main>
+    );
 
   if (!owner) return null;
 
@@ -38,7 +57,7 @@ export default function DashboardPage() {
           <span className="font-display text-xl font-extrabold">Munim</span>
         </div>
         <button
-          onClick={() => { logout(); router.replace("/signup"); }}
+          onClick={async () => { await logout().catch(() => { }); router.replace("/signup"); }}
           className="rounded-md px-3 py-2 text-sm font-semibold text-mute hover:bg-rule/40"
         >
           Logout

@@ -1,38 +1,25 @@
+import { api, ApiError } from "./api";
 import type { Owner } from "./types";
 
-const OWNER_KEY = "munim.owner";
+/** Sirf demo hint ke liye (.env.local mein set hota hai) */
+export const DEMO_OTP = process.env.NEXT_PUBLIC_DEMO_OTP;
 
-/* ---------- OTP (abhi MOCK) ----------
- * Backend banne par dono functions ko API call se badal denge:
- *   POST /auth/send-otp   { phone }
- *   POST /auth/verify-otp { phone, code }
- * Tab tak demo OTP hamesha 123456 hai.
- */
-export const DEMO_OTP = "123456";
+export const sendOtp = (phone: string) => api<{ ok: true }>("/auth/send-otp", { method: "POST", body: { phone } });
 
-export async function sendOtp(_phone: string): Promise<void> {
-  await new Promise((r) => setTimeout(r, 600));
+export async function verifyOtp(phone: string, name: string, code: string): Promise<Owner> {
+  const { owner } = await api<{ owner: Owner }>("/auth/verify-otp", { method: "POST", body: { phone, name, code } });
+  return owner;
 }
 
-export async function verifyOtp(_phone: string, code: string): Promise<boolean> {
-  await new Promise((r) => setTimeout(r, 500));
-  return code === DEMO_OTP;
-}
-
-/* ---------- Session (abhi localStorage) ---------- */
-export function getOwner(): Owner | null {
+/** Login hai to dukandaar, nahi to null */
+export async function getMe(): Promise<Owner | null> {
   try {
-    const raw = localStorage.getItem(OWNER_KEY);
-    return raw ? (JSON.parse(raw) as Owner) : null;
-  } catch {
-    return null;
+    const { owner } = await api<{ owner: Owner }>("/auth/me");
+    return owner;
+  } catch (e) {
+    if (e instanceof ApiError && e.status === 401) return null;
+    throw e;
   }
 }
 
-export function saveOwner(owner: Owner) {
-  localStorage.setItem(OWNER_KEY, JSON.stringify(owner));
-}
-
-export function logout() {
-  localStorage.removeItem(OWNER_KEY);
-}
+export const logout = () => api<{ ok: true }>("/auth/logout", { method: "POST" });

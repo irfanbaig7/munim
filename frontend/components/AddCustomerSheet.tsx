@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { addCustomer } from "@/lib/customers";
+import { ApiError } from "@/lib/api";
 import { cleanPhone, isValidName, isValidPhone } from "@/lib/validation";
 import type { Customer } from "@/lib/types";
 
@@ -13,6 +14,7 @@ export default function AddCustomerSheet({ open, onClose, onAdded }: Props) {
   const [phone, setPhone] = useState("");
   const [location, setLocation] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [saving, setSaving] = useState(false);
   const nameRef = useRef<HTMLInputElement>(null);
 
   // Band hone par sab reset
@@ -39,7 +41,7 @@ export default function AddCustomerSheet({ open, onClose, onAdded }: Props) {
 
   if (!open) return null;
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     const errs: Record<string, string> = {};
     if (!isValidName(name)) errs.name = "Naam kam se kam 2 akshar ka likhein.";
@@ -48,13 +50,18 @@ export default function AddCustomerSheet({ open, onClose, onAdded }: Props) {
     setErrors(errs);
     if (Object.keys(errs).length) return;
 
-    const res = addCustomer({ name, phone, location });
-    if (!res.ok) {
-      setErrors({ phone: res.error });
-      return;
+    setSaving(true);
+    try {
+      const customer = await addCustomer({ name: name.trim(), phone, location: location.trim() });
+      onAdded(customer);
+      onClose();
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Kuch gadbad ho gayi.";
+      // Duplicate number ka error number ke field ke neeche, baaki form ke neeche
+      setErrors(err instanceof ApiError && err.status === 409 ? { phone: msg } : { form: msg });
+    } finally {
+      setSaving(false);
     }
-    onAdded(res.customer);
-    onClose();
   };
 
   return (
@@ -128,12 +135,14 @@ export default function AddCustomerSheet({ open, onClose, onAdded }: Props) {
               />
             </Field>
 
+            {errors.form && <p role="alert" className="font-medium text-khata">{errors.form}</p>}
+
             <div className="flex gap-3 pt-2">
               <button type="button" onClick={() => setMode("choose")} className="rounded-xl border-2 border-rule px-5 py-3 font-semibold text-mute hover:bg-rule/30">
                 Peeche
               </button>
-              <button type="submit" className="flex-1 rounded-xl bg-haldi px-5 py-3 font-display text-lg font-bold text-ink hover:bg-haldidark">
-                Customer add karein
+              <button type="submit" disabled={saving} className="flex-1 rounded-xl bg-haldi px-5 py-3 font-display text-lg font-bold text-ink hover:bg-haldidark disabled:opacity-60">
+                {saving ? "Add ho raha hai…" : "Customer add karein"}
               </button>
             </div>
           </form>
