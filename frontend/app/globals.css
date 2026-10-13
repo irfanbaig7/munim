@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body { background: #F4F7FB; color: #14213D; }
+body { font-family: Mukta, system-ui, sans-serif; font-size: 17px; line-height: 1.5; }
+
+/* Bahi khata jaisi ruled lines + laal margin */
+.bahi {
+  background-color: #fff;
+  background-image:
+    linear-gradient(to right, transparent 44px, #E8A0A0 44px, #E8A0A0 45px, transparent 45px),
+    repeating-linear-gradient(to bottom, transparent 0, transparent 71px, #C9D6EA 71px, #C9D6EA 72px);
+  border: 1px solid #C9D6EA;
+  border-radius: 6px;
+}
+
+:focus-visible { outline: 3px solid #14213D; outline-offset: 2px; }
+
+@keyframes sheet-up { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+.sheet-in { animation: sheet-up .2s ease-out; }
+@media (prefers-reduced-motion: reduce) { .sheet-in { animation: none; } }
