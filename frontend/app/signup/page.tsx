@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import OtpInput from "@/components/OtpInput";
-import { DEMO_OTP, getOwner, saveOwner, sendOtp, verifyOtp } from "@/frontend/lib/auth";
-import { cleanPhone, isValidName, isValidPhone } from "@/frontend/lib/validation";
+import { DEMO_OTP, getOwner, saveOwner, sendOtp, verifyOtp } from "@/lib/auth";
+import { cleanPhone, isValidName, isValidPhone } from "@/lib/validation";
 
 type Step = "details" | "otp";
 

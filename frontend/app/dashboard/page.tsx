@@ -2,9 +2,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AddCustomerSheet from "@/components/AddCustomerSheet";
-import { getOwner, logout } from "@/frontend/lib/auth";
-import { listCustomers } from "@/frontend/lib/customers";
-import type { Customer, Owner } from "@/frontend/lib/types";
+import { getOwner, logout } from "@/lib/auth";
+import { listCustomers } from "@/lib/customers";
+import type { Customer, Owner } from "@/lib/types";
 
 export default function DashboardPage() {
   const router = useRouter();

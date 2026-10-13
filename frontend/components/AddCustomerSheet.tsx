@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { addCustomer } from "@/frontend/lib/customers";
-import { cleanPhone, isValidName, isValidPhone } from "@/frontend/lib/validation";
-import type { Customer } from "@/frontend/lib/types";
+import { addCustomer } from "@/lib/customers";
+import { cleanPhone, isValidName, isValidPhone } from "@/lib/validation";
+import type { Customer } from "@/lib/types";
 
 type Props = { open: boolean; onClose: () => void; onAdded: (c: Customer) => void };
 type Mode = "choose" | "manual";
