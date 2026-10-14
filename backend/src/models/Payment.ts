@@ -13,4 +13,4 @@ const paymentSchema = new Schema(
 
 paymentSchema.index({ ownerId: 1, customerId: 1, createdAt: -1 });
 
-export const Payment = model("Payment", paymentSchema);
+export const Payment = model("Payment", paymentSchema); 

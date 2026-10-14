@@ -10,4 +10,4 @@ const schema = z.object({
 });
 
 export const env = schema.parse(process.env);
-export const isProd = env.NODE_ENV === "production";
+export const isProd = env.NODE_ENV === "production"; 

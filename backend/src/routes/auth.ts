@@ -106,4 +106,4 @@ authRouter.get("/me", requireAuth, (req, res) => {
 authRouter.post("/logout", (_req, res) => {
     clearSession(res);
     res.json({ ok: true });
-});
+}); 

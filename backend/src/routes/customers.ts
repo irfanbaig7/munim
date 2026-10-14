@@ -82,4 +82,4 @@ customersRouter.get("/:id/ledger", async (req, res) => {
         entries: entries.map(entryToJson),
         payments: payments.map(paymentToJson),
     });
-});
+}); 

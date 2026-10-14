@@ -10,4 +10,4 @@ const ownerSchema = new Schema(
 );
 
 export const Owner = model("Owner", ownerSchema);
-export type OwnerDoc = HydratedDocument<InferSchemaType<typeof ownerSchema>>;
+export type OwnerDoc = HydratedDocument<InferSchemaType<typeof ownerSchema>>; 

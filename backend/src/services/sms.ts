@@ -9,4 +9,4 @@ export async function sendSms(phone: string, text: string): Promise<void> {
         throw new Error("SMS provider abhi set nahi hai (src/services/sms.ts)");
     }
     console.log(`[SMS -> +91${phone}] ${text}`);
-}
+} 

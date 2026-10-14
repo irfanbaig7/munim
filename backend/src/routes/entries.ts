@@ -38,4 +38,4 @@ entriesRouter.post("/", async (req, res) => {
     });
 
     res.status(201).json({ entry: entryToJson(entry) });
-});
+}); 

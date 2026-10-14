@@ -14,4 +14,4 @@ const customerSchema = new Schema(
 // Ek dukandaar ke paas ek number do baar nahi
 customerSchema.index({ ownerId: 1, phone: 1 }, { unique: true });
 
-export const Customer = model("Customer", customerSchema);
+export const Customer = model("Customer", customerSchema); 

@@ -45,4 +45,4 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
         clearSession(res);
         return res.status(401).json({ error: "Session khatam ho gaya. Dobara login karein." });
     }
-}
+} 

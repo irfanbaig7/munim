@@ -32,4 +32,4 @@ paymentsRouter.post("/", async (req, res) => {
     });
 
     res.status(201).json({ payment: paymentToJson(payment) });
-});
+}); 

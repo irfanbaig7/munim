@@ -12,4 +12,4 @@ connectDb()
     .catch((err: Error) => {
         console.error("MongoDB se connect nahi ho paaya:", err.message);
         process.exit(1);
-    });
+    }); 

@@ -13,4 +13,4 @@ const otpSchema = new Schema({
     createdAt: { type: Date, default: Date.now, expires: 3600 },
 });
 
-export const OtpCode = model("OtpCode", otpSchema);
+export const OtpCode = model("OtpCode", otpSchema); 

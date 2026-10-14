@@ -25,4 +25,4 @@ const entrySchema = new Schema(
 
 entrySchema.index({ ownerId: 1, customerId: 1, createdAt: -1 });
 
-export const Entry = model("Entry", entrySchema);
+export const Entry = model("Entry", entrySchema); 

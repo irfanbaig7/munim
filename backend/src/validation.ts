@@ -52,4 +52,4 @@ export const addPaymentBody = z.object({
     note: z.string().trim().max(120).optional(),
 });
 
-export const customerIdParam = z.object({ id: objectId });
+export const customerIdParam = z.object({ id: objectId }); 

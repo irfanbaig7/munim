@@ -23,4 +23,4 @@ app.use((_req, res) => res.status(404).json({ error: "Ye rasta nahi mila." }));
 app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
     console.error(err);
     res.status(500).json({ error: "Kuch gadbad ho gayi. Thodi der baad dobara try karein." });
-});
+}); 
