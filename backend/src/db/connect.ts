@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
-import { env } from "../env.js";
-import { Customer } from "../models/Customer.js";
-import { OtpCode } from "../models/OtpCode.js";
-import { Owner } from "../models/Owner.js";
+import { env } from "../env.ts";
+import { Customer } from "../models/Customer.ts";
+import { OtpCode } from "../models/OtpCode.ts";
+import { Owner } from "../models/Owner.ts";
 
 export async function connectDb() {
     await mongoose.connect(env.MONGODB_URI, { serverSelectionTimeoutMS: 5000 });

@@ -1,6 +1,6 @@
-import { app } from "./app.js";
-import { connectDb } from "./db/connect.js";
-import { env } from "./env.js";
+import { app } from "./app.ts";
+import { connectDb } from "./db/connect.ts";
+import { env } from "./env.ts";
 
 connectDb()
     .then(() => {

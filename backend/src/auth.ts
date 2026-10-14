@@ -1,7 +1,7 @@
 import type { CookieOptions, NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { env, isProd } from "./env.js";
-import { Owner, type OwnerDoc } from "./models/Owner.js";
+import { env, isProd } from "./env.ts";
+import { Owner, type OwnerDoc } from "./models/Owner.ts";
 
 const COOKIE = "munim_token";
 const MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000; // 30 din

@@ -1,4 +1,4 @@
-import { isProd } from "../env.js";
+import { isProd } from "../env.ts";
 
 /**
  * OTP SMS bhejne ki jagah. Abhi sirf console mein print karta hai.

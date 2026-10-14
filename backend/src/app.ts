@@ -1,7 +1,9 @@
 import cookieParser from "cookie-parser";
 import express, { type NextFunction, type Request, type Response } from "express";
-import { authRouter } from "./routes/auth.js";
-import { customersRouter } from "./routes/customers.js";
+import { authRouter } from "./routes/auth.ts";
+import { customersRouter } from "./routes/customers.ts";
+import { entriesRouter } from "./routes/entries.ts";
+import { paymentsRouter } from "./routes/payments.ts";
 
 export const app = express();
 
@@ -12,6 +14,8 @@ app.use(cookieParser());
 app.get("/health", (_req, res) => res.json({ ok: true }));
 app.use("/auth", authRouter);
 app.use("/customers", customersRouter);
+app.use("/entries", entriesRouter);
+app.use("/payments", paymentsRouter);
 
 app.use((_req, res) => res.status(404).json({ error: "Ye rasta nahi mila." }));
 

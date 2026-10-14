@@ -1,11 +1,11 @@
 import crypto from "node:crypto";
 import { Router } from "express";
-import { clearSession, requireAuth, setSession } from "../auth.js";
-import { env, isProd } from "../env.js";
-import { OtpCode } from "../models/OtpCode.js";
-import { Owner } from "../models/Owner.js";
-import { sendSms } from "../services/sms.js";
-import { sendOtpBody, verifyOtpBody } from "../validation.js";
+import { clearSession, requireAuth, setSession } from "../auth.ts";
+import { env, isProd } from "../env.ts";
+import { OtpCode } from "../models/OtpCode.ts";
+import { Owner } from "../models/Owner.ts";
+import { sendSms } from "../services/sms.ts";
+import { sendOtpBody, verifyOtpBody } from "../validation.ts";
 
 export const authRouter = Router();
 
